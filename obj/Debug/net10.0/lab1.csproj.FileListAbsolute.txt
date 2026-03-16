@@ -1,0 +1,14 @@
+C:\Users\Smart\OneDrive\Desktop\lab1\bin\Debug\net10.0\lab1.exe
+C:\Users\Smart\OneDrive\Desktop\lab1\bin\Debug\net10.0\lab1.deps.json
+C:\Users\Smart\OneDrive\Desktop\lab1\bin\Debug\net10.0\lab1.runtimeconfig.json
+C:\Users\Smart\OneDrive\Desktop\lab1\bin\Debug\net10.0\lab1.dll
+C:\Users\Smart\OneDrive\Desktop\lab1\bin\Debug\net10.0\lab1.pdb
+C:\Users\Smart\OneDrive\Desktop\lab1\obj\Debug\net10.0\lab1.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Smart\OneDrive\Desktop\lab1\obj\Debug\net10.0\lab1.AssemblyInfoInputs.cache
+C:\Users\Smart\OneDrive\Desktop\lab1\obj\Debug\net10.0\lab1.AssemblyInfo.cs
+C:\Users\Smart\OneDrive\Desktop\lab1\obj\Debug\net10.0\lab1.csproj.CoreCompileInputs.cache
+C:\Users\Smart\OneDrive\Desktop\lab1\obj\Debug\net10.0\lab1.dll
+C:\Users\Smart\OneDrive\Desktop\lab1\obj\Debug\net10.0\refint\lab1.dll
+C:\Users\Smart\OneDrive\Desktop\lab1\obj\Debug\net10.0\lab1.pdb
+C:\Users\Smart\OneDrive\Desktop\lab1\obj\Debug\net10.0\lab1.genruntimeconfig.cache
+C:\Users\Smart\OneDrive\Desktop\lab1\obj\Debug\net10.0\ref\lab1.dll
