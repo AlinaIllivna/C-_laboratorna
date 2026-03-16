@@ -195,16 +195,13 @@ class Part2
 
         Article[][] jagged = new Article[r][];
 
-        for (int i = 0; i < r; i++)
+        //  створення jagged
+        for (int i = 0; i < r-1; i++)
         {
-            if (i < r - 1){
-                jagged[i] = new Article[i + 1];
+            jagged[i] = new Article[i + 1];
+            
             }
-            else{
-                jagged[i] = new Article[i + 1 - (t - total)];
-            }
-
-        }
+        jagged[r-1] = new Article[r  - (t - total)];
 
         // заповнення jagged
         for (int i= 0; i < jagged.Length; i++)
