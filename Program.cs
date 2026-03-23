@@ -1,7 +1,12 @@
-﻿class Program
+﻿using System;
+
+namespace Lab1
 {
-    static void Main()
+    class Program
     {
-        Part2.Run();
+        static void Main()
+        {
+            Part2.Run();
+        }
     }
 }

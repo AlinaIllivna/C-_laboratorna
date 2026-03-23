@@ -1,7 +1,9 @@
 using System;
 // using System.Text;
 
-class Person
+namespace Lab1
+{
+public class Person
 {
     private string _name =null!;
     private string _surname=null!;
@@ -56,6 +58,35 @@ class Person
 
     // Короткий рядок
     public virtual string ToShortString()=> $"{Surname} {Name}";
+
+    // --------------------
+    public override bool Equals(object? obj)
+    {
+        if (ReferenceEquals(this, obj)) return true; //якщо це той самий об’єкт → одразу true
+        if (obj is not Person other) return false;
+        
+        return Name == other.Name &&
+            Surname == other.Surname &&
+            BirthDate == other.BirthDate;
+            }
+
+    public override int GetHashCode() => HashCode.Combine(Name, Surname, BirthDate);
+        
+
+    public static bool operator ==(Person? p1, Person? p2)
+    {
+        if (ReferenceEquals(p1, p2)) return true;
+        if (p1 is null || p2 is null) return false;
+        return p1.Equals(p2);
+        }
+
+    public static bool operator !=(Person? p1, Person? p2) => !(p1 == p2);
     
+    public Person DeepCopy() => new(Name, Surname, BirthDate);
+        
+
 }
+}
+
+
 

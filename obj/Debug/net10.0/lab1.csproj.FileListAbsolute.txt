@@ -12,3 +12,4 @@ C:\Users\Smart\OneDrive\Desktop\lab1\obj\Debug\net10.0\refint\lab1.dll
 C:\Users\Smart\OneDrive\Desktop\lab1\obj\Debug\net10.0\lab1.pdb
 C:\Users\Smart\OneDrive\Desktop\lab1\obj\Debug\net10.0\lab1.genruntimeconfig.cache
 C:\Users\Smart\OneDrive\Desktop\lab1\obj\Debug\net10.0\ref\lab1.dll
+C:\Users\Smart\OneDrive\Desktop\lab1\obj\Debug\net10.0\lab1.sourcelink.json
