@@ -1,6 +1,7 @@
 using System;
 
-
+namespace Lab1
+{
 class Part1
 {
     static void SetBirthYear(Person person) => person.BirthYear = 1990;
@@ -86,4 +87,5 @@ class Part1
         end = Environment.TickCount;
         Console.WriteLine($"Time for jagged array: {end - start} ms");
     }
+}
 }

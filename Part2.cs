@@ -1,264 +1,116 @@
 using System;
-using System.Text;
 
 
- enum Frequency
+
+namespace Lab1
 {
-    Weekly,
-    Monthly,
-    Yearly
-}
-
-class Article
-{
-    public Person Author { get; init; }
-    public string Title { get; init; }
-    public double Rating { get; init; }
-
-    //  Конструктор з параметрами
-    public Article(Person author, string title, double rating)
+    class Part2
     {
-        Author = author;
-        Title = title;
-        Rating = rating;
-    }
-
-    //  Конструктор без параметрів
-    public Article(): this(author: new Person(), title : "Title", rating:0){}
-    
-
-    public override string ToString()=> $"Author: {Author.ToShortString()}, Title: {Title}, Rating: {Rating}";
-    
-}
-
-class Magazine
-{
-    private string _name=null!;
-    private Frequency _frequency;
-    private DateTime _releaseDate;
-    private int _circulation;
-    private Article[] _articles=null!;
-
-    //  Конструктор з параметрами
-    public Magazine(string name, Frequency frequency, DateTime releaseDate, int circulation)
-    {
-        Name = name;
-        Frequency = frequency;
-        ReleaseDate = releaseDate;
-        Circulation = circulation;
-        Articles = Array.Empty<Article>();
-    }
-     //  Конструктор без  параметрів
-    public Magazine():this(name :"Default Magazine", frequency : Frequency.Monthly, releaseDate: DateTime.Now, circulation :1000){}
-      
-    public string Name
-    {
-        get => _name;
-        init => _name = value;
-    }
-
-    public Frequency Frequency
-    {
-        get => _frequency;
-        init => _frequency = value;
-    }
-
-    public DateTime ReleaseDate
-    {
-        get => _releaseDate;
-        init => _releaseDate = value;
-    }
-
-    public int Circulation
-    {
-        get => _circulation;
-        init => _circulation = value;
-    }
-    
-    public Article[] Articles
-    {
-        get => _articles;
-        init => _articles = value;
-    }
-
-
-    // Середній рейтинг статей
-    public double AverageRating
-    {
-        get
+        public static void Run()
         {
-            if (_articles.Length == 0)
-                return 0;
+            // Edition comparison
+            Edition e1 = new ("Magazine", new DateTime(2024, 1, 1), 1000);
+            Edition e2 = new ("Magazine",  new DateTime(2024, 1, 1) , 1000);
 
-            double sum = 0;
+            Console.WriteLine("Reference equals: " + ReferenceEquals(e1, e2));
+            Console.WriteLine("Objects equal: " + e1.Equals(e2));
+            Console.WriteLine("Hash1: " + e1.GetHashCode());
+            Console.WriteLine("Hash2: " + e2.GetHashCode());
 
-            foreach (var article in _articles)
-                sum += article.Rating;
-
-            return sum / _articles.Length;
-        }
-    }
-     
-    // Індексатор
-    public bool this[Frequency freq] => Frequency == freq;
-    
-
-
-
-     //Додавання нових статтей
-    public void AddArticles(params Article[] newArticles)
-    {  
-        if(newArticles is null|| newArticles.Length==0) return;
-        if(_articles is null|| _articles.Length==0)
-         {
-            _articles=newArticles;
-            return;
-        }
-
-        int oldLength = _articles.Length;
-
-        Array.Resize(ref _articles, oldLength + newArticles.Length);
-
-        for (int i = 0; i < newArticles.Length; i++)
-        {
-            _articles[oldLength + i] = newArticles[i];
-        }
-    }
-
-    public override string ToString()
-    {
-        StringBuilder sb = new StringBuilder("ABC", 100);
-        sb.Append($"Magazine: {_name}\nFrequency: {_frequency}\nDate: {_releaseDate}\nCirculation: {_circulation}\nArticles:\n");
-            
-
-        foreach (var article in _articles)
-        { 
-            sb.AppendLine(article.ToString());
-            
-           
-        }
-
-        return sb.ToString();
-    }
-
-    public virtual string ToShortString()=> $"Magazine: {Name}, Frequency: {Frequency}, Average rating: {AverageRating}";
-    
-}
-
-class Part2
-{
-    public static void Run()
-    {
-        Magazine magazine = new Magazine();
-
-        Console.WriteLine("Short info:");
-        Console.WriteLine(magazine.ToShortString());
-
-        Console.WriteLine("\nFrequency check:");
-
-        Console.WriteLine($"Weekly: {magazine[Frequency.Weekly]}");
-        Console.WriteLine($"Monthly: {magazine[Frequency.Monthly]}");
-        Console.WriteLine($"Yearly: {magazine[Frequency.Yearly]}");
-
-        Article a1 = new Article(new Person(), "C# Basics", 4.5);
-        Article a2 = new Article(new Person(), "OOP in C#", 5.0);
-
-        magazine.AddArticles(a1, a2);
-
-        Console.WriteLine("\nFull magazine info:");
-        Console.WriteLine(magazine.ToString());
-
-        Console.WriteLine("\n--- Time comparison for Article arrays ---");
-        Console.WriteLine("Enter nRows and nColumns separated by space:");
-
-        string? input = Console.ReadLine();
-          if (input == null)
-          return;
-
-        string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-
-        int nRows = int.Parse(parts[0]);
-        int nColumns = int.Parse(parts[1]);
-        int total = nRows * nColumns;
-
-        Article[] array1D = new Article[total];
-        Article[,] array2D = new Article[nRows, nColumns];
-
-        int t = 0, r = 0;
-
-        do
-        {
-            r++;
-            t += r;
+            //   try/catch
+            try
+            {
+                e1.Circulation = -3;
             }
-        while (t < total);
-
-        Article[][] jagged = new Article[r][];
-
-        //  створення jagged
-        for (int i = 0; i < r-1; i++)
-        {
-            jagged[i] = new Article[i + 1];
-            
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
             }
-        jagged[r-1] = new Article[r  - (t - total)];
 
-        // заповнення jagged
-        for (int i= 0; i < jagged.Length; i++)
-            for (int j = 0; j < jagged[i].Length; j++)
-                jagged[i][j] = new Article();
+            //   Magazine створення
+            Magazine magazine = new Magazine();
 
-        // заповнення одновимірного
-        for (int i = 0; i < array1D.Length; i++)
-            array1D[i] = new Article();
-       
-        // заповнення двовимірного
-        for (int i = 0; i < nRows; i++)
-            for (int j = 0; j < nColumns; j++)
-                array2D[i, j] = new Article();
+            Console.WriteLine("\nShort info:");
+            Console.WriteLine(magazine.ToShortString());
 
+            Console.WriteLine("\nFrequency check:");
+            Console.WriteLine($"Weekly: {magazine[Frequency.Weekly]}");
+            Console.WriteLine($"Monthly: {magazine[Frequency.Monthly]}");
+            Console.WriteLine($"Yearly: {magazine[Frequency.Yearly]}");
 
-int start, end;
+            //  редактори
+            Person p1 = new Person("Alina", "Illivna", DateTime.Now);
+            Person p2 = new Person("Test", "User", DateTime.Now);
+            Person p3 = new Person("NoArticle", "Editor", DateTime.Now);
 
-// 1D array
-start = Environment.TickCount;
+            magazine.AddEditors(p1, p2, p3);
 
-for (int i = 0; i < array1D.Length; i++)
-{
-     _ = array1D[i].Rating;
-}
+            //  статті
+            magazine.AddArticles(
+                new Article(p1, "C# Basics", 4.5),
+                new Article(p2, "OOP in C#", 5.0),
+                new Article(new Person("Other", "Author", DateTime.Now), "Java", 3.5)
+            );
 
-end = Environment.TickCount;
-Console.WriteLine($"Time for 1D array: {end - start} ms");
+            Console.WriteLine("\n--- Full magazine info ---");
+            Console.WriteLine(magazine);
 
+            //   Edition property
+            Console.WriteLine("\n--- Edition from Magazine ---");
+            Console.WriteLine(magazine.Edition);
 
-// 2D array
-start = Environment.TickCount;
+            //  DeepCopy
+            Console.WriteLine("\n--- DeepCopy test ---");
 
-for (int i = 0; i < nRows; i++)
-    for (int j = 0; j < nColumns; j++)
-    {
-        _ = array2D[i, j].Rating;
-    }
+            Magazine copy = (Magazine)magazine.DeepCopy();
 
-end = Environment.TickCount;
-Console.WriteLine($"Time for 2D array: {end - start} ms");
+            // змінюємо оригінал
+            magazine.AddArticles(new Article(new Person(), "NEW ARTICLE", 1));
 
+            Console.WriteLine("Original:");
+            Console.WriteLine(magazine);
 
-// Jagged array
-start = Environment.TickCount;
+            Console.WriteLine("Copy (must stay unchanged):");
+            Console.WriteLine(copy);
 
-for (int i = 0; i < jagged.Length; i++)
-{
-    var row = jagged[i];
+            Console.WriteLine($"Same object? {ReferenceEquals(magazine, copy)}");
 
-    for (int j = 0; j < row.Length; j++)
-    {
-        _ = row[j].Rating;
-    }
-}
+            //   foreach (double)
+            Console.WriteLine("\n--- Articles with rating > 4 ---");
 
-end = Environment.TickCount;
-Console.WriteLine($"Time for jagged array: {end - start} ms");
+            foreach (Article article in magazine.GetArticlesWithRatingGreaterThan(4))
+            {
+                Console.WriteLine(article);
+            }
+
+            //   foreach (string)
+            Console.WriteLine("\n--- Articles with 'C#' in title ---");
+
+            foreach (Article article in magazine.GetArticlesWithTitleContaining("C#"))
+            {
+                Console.WriteLine(article);
+            }
+
+            Console.WriteLine("\n--- Articles where author is NOT editor ---");
+
+            foreach (var item in magazine)
+            {
+                Console.WriteLine(item);
+            }
+
+            Console.WriteLine("\n--- Articles by editors ---");
+
+            foreach (Article article in magazine.GetArticlesByEditors())
+            {
+                Console.WriteLine(article);
+            }
+
+            Console.WriteLine("\n--- Editors without articles ---");
+
+            foreach (Person editor in magazine.GetEditorsWithoutArticles())
+            {
+                Console.WriteLine(editor);
+            }
+        }
     }
 }
