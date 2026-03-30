@@ -1,26 +1,27 @@
 using System;
 using System.Collections;
 using System.Text;
+using System.Collections.Generic;
 
 namespace Lab1
 {
 public class Magazine : Edition, IRateAndCopy, IEnumerable
 {
     private Frequency _frequency;
-    private ArrayList _editors = new();
-    private ArrayList _articles = new();
+    private List<Person> _editors = new();
+    private List<Article> _articles = new();
 
     public Magazine(string name, Frequency frequency, DateTime releaseDate, int circulation,
-                    ArrayList? editors, ArrayList? articles)
+                    List<Person>? editors, List<Article>? articles)
         : base(name, releaseDate, circulation)
     {
         Frequency = frequency;
-        Editors = editors ?? new ArrayList();
-        Articles = articles ?? new ArrayList();
+        Editors = editors ?? new List<Person>();
+        Articles = articles ?? new List<Article>();
     }
 
     public Magazine(string name, Frequency frequency, DateTime releaseDate, int circulation)
-        : this(name, frequency, releaseDate, circulation, new ArrayList(), new ArrayList())
+        : this(name, frequency, releaseDate, circulation,  new List<Person>(), new List<Article>())
     {
     }
 
@@ -34,16 +35,16 @@ public class Magazine : Edition, IRateAndCopy, IEnumerable
         init => _frequency = value;
     }
 
-    public ArrayList Editors
-    {
-        get => _editors ??= new ArrayList();
-        init => _editors = value ?? new ArrayList();
+   public List<Person> Editors
+   {
+    get => _editors ??= new List<Person>();
+    init => _editors = value ?? new List<Person>();
     }
 
-    public ArrayList Articles
-    {
-        get => _articles ??= new ArrayList();
-        init => _articles = value ?? new ArrayList();
+   public List<Article> Articles
+   {
+    get => _articles ??= new List<Article>();
+    init => _articles = value ?? new List<Article>();
     }
 
     public double AverageRating
@@ -207,17 +208,18 @@ public class Magazine : Edition, IRateAndCopy, IEnumerable
 
     public override object DeepCopy()
     {
-        ArrayList editorsCopy = new ArrayList();
-        foreach (Person editor in Editors)
-        {
-            editorsCopy.Add(editor.DeepCopy());
-        }
+        List<Person> editorsCopy = new();
+foreach (Person editor in Editors)
+{
+    editorsCopy.Add((Person)editor.DeepCopy());
+}
 
-        ArrayList articlesCopy = new ArrayList();
-        foreach (Article article in Articles)
-        {
-            articlesCopy.Add(article.DeepCopy());
-        }
+       
+        List<Article> articlesCopy = new();
+foreach (Article article in Articles)
+{
+    articlesCopy.Add((Article)article.DeepCopy());
+}
 
         return new Magazine(Name, Frequency, ReleaseDate, Circulation, editorsCopy, articlesCopy);
     }
@@ -227,12 +229,12 @@ public class Magazine : Edition, IRateAndCopy, IEnumerable
 
     public class MagazineEnumerator : IEnumerator
     {
-        private readonly ArrayList _list;
+        private readonly List<Article> _list;
         private int _position = -1;
 
         public MagazineEnumerator(Magazine magazine)
         {
-            _list = new ArrayList();
+            _list = new List<Article>();
 
             foreach (Article article in magazine.Articles)
             {

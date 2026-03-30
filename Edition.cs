@@ -1,12 +1,19 @@
 using System;
-
+using System.Collections.Generic;
 namespace Lab1
 {
-public class Edition
+public class Edition : IComparable<Edition>
 {
     protected string _name= null!;
     protected DateTime _releaseDate;
     protected int _circulation;
+
+
+     public int CompareTo(Edition? other)
+     {
+        if (other == null) return 1;
+        return string.Compare(Name, other.Name, StringComparison.Ordinal);
+        }
 
     public Edition(string name, DateTime releaseDate, int circulation)
     {
@@ -68,4 +75,24 @@ public class Edition
      public virtual string ToShortString()=> ToString();
         
 }
+
+public class EditionDateComparer : IComparer<Edition>
+{
+    public int Compare(Edition? x, Edition? y)
+    {
+        if (x == null || y == null) return 0;
+        return x.ReleaseDate.CompareTo(y.ReleaseDate);
+    }
 }
+
+public class EditionCirculationComparer : IComparer<Edition>
+{
+    public int Compare(Edition? x, Edition? y)
+    {
+        if (x == null || y == null) return 0;
+        return x.Circulation.CompareTo(y.Circulation);
+    }
+}
+
+}
+
