@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Smart\\OneDrive\\Desktop\\lab1\\lab1.csproj": {}
+    "C:\\Users\\Smart\\OneDrive\\Desktop\\платформи корпоративних інформаційних систем\\lab1.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Smart\\OneDrive\\Desktop\\lab1\\lab1.csproj": {
+    "C:\\Users\\Smart\\OneDrive\\Desktop\\платформи корпоративних інформаційних систем\\lab1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Smart\\OneDrive\\Desktop\\lab1\\lab1.csproj",
+        "projectUniqueName": "C:\\Users\\Smart\\OneDrive\\Desktop\\платформи корпоративних інформаційних систем\\lab1.csproj",
         "projectName": "lab1",
-        "projectPath": "C:\\Users\\Smart\\OneDrive\\Desktop\\lab1\\lab1.csproj",
+        "projectPath": "C:\\Users\\Smart\\OneDrive\\Desktop\\платформи корпоративних інформаційних систем\\lab1.csproj",
         "packagesPath": "C:\\Users\\Smart\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Smart\\OneDrive\\Desktop\\lab1\\obj\\",
+        "outputPath": "C:\\Users\\Smart\\OneDrive\\Desktop\\платформи корпоративних інформаційних систем\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Smart\\AppData\\Roaming\\NuGet\\NuGet.Config",

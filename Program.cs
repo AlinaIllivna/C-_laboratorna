@@ -6,8 +6,8 @@ namespace Lab1
     {
         static void Main()
         {
-            // Part2.Run();
-            Console.WriteLine("=== TEST COLLECTIONS ===");
+            Console.WriteLine("=== TEST COLLECTIONS (Standard vs Immutable vs Sorted) ===");
+
             TestCollections test = new TestCollections(20000);
             test.MeasureSearch();
 
@@ -16,18 +16,18 @@ namespace Lab1
             MagazineCollection mc = new MagazineCollection();
             mc.AddDefaults();
 
+            Console.WriteLine("\n--- DEFAULT DATA ---");
             Console.WriteLine(mc.ToString());
 
-
-            Magazine m = new Magazine("My Magazine",Frequency.Monthly,DateTime.Now,  500);
+            Magazine m = new Magazine("My Magazine", Frequency.Monthly, DateTime.Now, 500);
 
             m.AddEditors(new Person("Іван", "Іванов", DateTime.Now));
             m.AddArticles(new Article(new Person("Петро", "Петров", DateTime.Now), "Test Article", 5));
 
             mc.AddMagazines(m);
 
-            Console.WriteLine("\n=== WITH DATA ===");
+            Console.WriteLine("\n--- AFTER ADDING DATA ---");
             Console.WriteLine(mc.ToString());
-            }
-            }
         }
+    }
+}

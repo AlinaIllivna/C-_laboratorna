@@ -27,7 +27,7 @@ public class Edition : IComparable<Edition>
     public string Name
     {
         get => _name;
-        init => _name = value ?? throw new ArgumentNullException(nameof(value));
+        set => _name = value ?? throw new ArgumentNullException(nameof(value));
     }
 
     public DateTime ReleaseDate
