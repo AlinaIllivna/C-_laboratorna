@@ -11,23 +11,53 @@ namespace Lab1
             TestCollections test = new TestCollections(20000);
             test.MeasureSearch();
 
-            Console.WriteLine("\n=== MAGAZINE COLLECTION ===");
+            Console.WriteLine("\n=== MAGAZINE COLLECTION WITH EVENTS ===");
 
-            MagazineCollection mc = new MagazineCollection();
-            mc.AddDefaults();
+            MagazineCollection collection1 = new MagazineCollection();
+            MagazineCollection collection2 = new MagazineCollection();
 
-            Console.WriteLine("\n--- DEFAULT DATA ---");
-            Console.WriteLine(mc.ToString());
+            collection1.CollectionName = "Collection 1";
+            collection2.CollectionName = "Collection 2";
 
+            Listener listener1 = new Listener();
+            Listener listener2 = new Listener();
+
+            // listener1 тільки для collection1
+            collection1.MagazineAdded += listener1.OnMagazineAdded;
+            collection1.MagazineReplaced += listener1.OnMagazineReplaced;
+
+            // listener2 для обох
+            collection1.MagazineAdded += listener2.OnMagazineAdded;
+            collection1.MagazineReplaced += listener2.OnMagazineReplaced;
+
+            collection2.MagazineAdded += listener2.OnMagazineAdded;
+            collection2.MagazineReplaced += listener2.OnMagazineReplaced;
+
+            // ДОДАВАННЯ
+            collection1.AddDefaults();
+            collection2.AddDefaults();
+            collection1.RemoveAt(1);
+
+            // ДОДАЄМО СВІЙ ЖУРНАЛ
             Magazine m = new Magazine("My Magazine", Frequency.Monthly, DateTime.Now, 500);
 
             m.AddEditors(new Person("Іван", "Іванов", DateTime.Now));
             m.AddArticles(new Article(new Person("Петро", "Петров", DateTime.Now), "Test Article", 5));
 
-            mc.AddMagazines(m);
+            collection1.AddMagazines(m);
 
-            Console.WriteLine("\n--- AFTER ADDING DATA ---");
-            Console.WriteLine(mc.ToString());
+            // ЗАМІНА через Replace
+            collection1.Replace(0, new Magazine("Replaced Mag", Frequency.Monthly, DateTime.Now, 1000));
+
+            // ЗАМІНА через індексатор
+            collection2[1] = new Magazine("Indexed Mag", Frequency.Weekly, DateTime.Now, 2000);
+
+            // ВИВІД
+            Console.WriteLine("\n--- LISTENER 1 ---");
+            Console.WriteLine(listener1.ToString());
+
+            Console.WriteLine("\n--- LISTENER 2 ---");
+            Console.WriteLine(listener2.ToString());
         }
     }
 }
