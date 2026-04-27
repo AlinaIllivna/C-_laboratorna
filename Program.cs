@@ -5,6 +5,8 @@ namespace Lab1
     class Program
     {
         static void Main()
+
+
         {
             Console.WriteLine("=== TEST COLLECTIONS (Standard vs Immutable vs Sorted) ===");
 
@@ -58,6 +60,39 @@ namespace Lab1
 
             Console.WriteLine("\n--- LISTENER 2 ---");
             Console.WriteLine(listener2.ToString());
+
+                  Console.WriteLine("\n=== TEST SERIALIZATION ===");
+
+Magazine mag = new Magazine("Test Magazine", Frequency.Monthly, DateTime.Now, 1000);
+
+mag.AddEditors(new Person("Іван", "Іванов", DateTime.Now));
+mag.AddArticles(new Article(new Person("Петро", "Петров", DateTime.Now), "Article 1", 4.5));
+
+Console.WriteLine("\n--- ORIGINAL ---");
+Console.WriteLine(mag);
+
+// SAVE
+mag.Save("mag.dat");
+
+// LOAD
+Magazine loaded = new Magazine();
+loaded.Load("mag.dat");
+
+Console.WriteLine("\n--- LOADED ---");
+Console.WriteLine(loaded);
+
+// DEEP COPY
+Magazine copy = (Magazine)mag.DeepCopy();
+
+Console.WriteLine("\n--- COPY ---");
+Console.WriteLine(copy);
+
+// ADD FROM CONSOLE
+Console.WriteLine("\n=== ADD FROM CONSOLE ===");
+mag.AddFromConsole();
+
+Console.WriteLine("\n--- AFTER ADD ---");
+Console.WriteLine(mag);
         }
     }
 }

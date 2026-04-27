@@ -1,16 +1,19 @@
 using System;
 using System.Collections;
 using System.Text;
+using System.Text.Json;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Lab1
 {
+
+[Serializable]
 public class Magazine : Edition, IRateAndCopy, IEnumerable
 {
     private Frequency _frequency;
     private List<Person> _editors = new();
     private List<Article> _articles = new();
-
     public Magazine(string name, Frequency frequency, DateTime releaseDate, int circulation,
                     List<Person>? editors, List<Article>? articles)
         : base(name, releaseDate, circulation)
@@ -32,19 +35,19 @@ public class Magazine : Edition, IRateAndCopy, IEnumerable
     public Frequency Frequency
     {
         get => _frequency;
-        init => _frequency = value;
+        set => _frequency = value;
     }
 
    public List<Person> Editors
    {
     get => _editors ??= new List<Person>();
-    init => _editors = value ?? new List<Person>();
+    set => _editors = value ?? new List<Person>();
     }
 
    public List<Article> Articles
    {
     get => _articles ??= new List<Article>();
-    init => _articles = value ?? new List<Article>();
+    set => _articles = value ?? new List<Article>();
     }
 
     public double AverageRating
@@ -67,7 +70,7 @@ public class Magazine : Edition, IRateAndCopy, IEnumerable
     public Edition Edition
     {
         get => this;
-        init
+        set
         {
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
@@ -80,27 +83,33 @@ public class Magazine : Edition, IRateAndCopy, IEnumerable
 
     public bool this[Frequency freq] => Frequency == freq;
 
-    public void AddArticles(params Article[] newArticles)
+  public void AddArticles(params Article[] newArticles)
     {
-        if (newArticles == null || newArticles.Length == 0)
-            return;
+        if (newArticles == null)
+            throw new ArgumentNullException(nameof(newArticles));
 
-        foreach (Article article in newArticles)
+        foreach (var article in newArticles)
         {
-            if (article != null)
-                Articles.Add(article);
+            if (article == null)
+                continue;
+
+            if (!_articles.Contains(article))
+                _articles.Add(article);
         }
     }
 
-    public void AddEditors(params Person[] newEditors)
+     public void AddEditors(params Person[] newEditors)
     {
-        if (newEditors == null || newEditors.Length == 0)
-            return;
+        if (newEditors == null)
+            throw new ArgumentNullException(nameof(newEditors));
 
-        foreach (Person editor in newEditors)
+        foreach (var editor in newEditors)
         {
-            if (editor != null)
-                Editors.Add(editor);
+            if (editor == null)
+                continue;
+
+            if (!_editors.Contains(editor))
+                _editors.Add(editor);
         }
     }
 
@@ -206,23 +215,23 @@ public class Magazine : Edition, IRateAndCopy, IEnumerable
         return hash;
     }
 
-    public override object DeepCopy()
+  public override object DeepCopy()
+{
+    var copiedEditors = new List<Person>();
+    foreach (var editor in Editors)
     {
-        List<Person> editorsCopy = new();
-foreach (Person editor in Editors)
-{
-    editorsCopy.Add((Person)editor.DeepCopy());
-}
-
-       
-        List<Article> articlesCopy = new();
-foreach (Article article in Articles)
-{
-    articlesCopy.Add((Article)article.DeepCopy());
-}
-
-        return new Magazine(Name, Frequency, ReleaseDate, Circulation, editorsCopy, articlesCopy);
+        copiedEditors.Add((Person)editor.DeepCopy());
     }
+
+    var copiedArticles = new List<Article>();
+    foreach (var article in Articles)
+    {
+        copiedArticles.Add((Article)article.DeepCopy());
+    }
+
+    return new Magazine(Name, Frequency, ReleaseDate, Circulation, copiedEditors, copiedArticles);
+}
+
 
     public IEnumerator GetEnumerator()=> new MagazineEnumerator(this);
     
@@ -308,6 +317,152 @@ foreach (Article article in Articles)
             if (!hasArticle)
                 yield return editor;
         }
+
+        
+    }
+
+    [Serializable]
+    private class MagazineData
+    {
+        public string? Name { get; set; }
+        public Frequency Frequency { get; set; }
+        public DateTime ReleaseDate { get; set; }
+        public int Circulation { get; set; }
+        public List<Person>? Editors { get; set; }
+        public List<Article>? Articles { get; set; }
+    }
+
+ // ---------------- SAVE / LOAD ----------------
+
+public bool Save(string filename)
+{
+    try
+    {
+        using (FileStream fs = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.None))
+        {
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true
+            };
+
+            var data = new MagazineData
+            {
+                Name = this.Name,
+                Frequency = this.Frequency,
+                ReleaseDate = this.ReleaseDate,
+                Circulation = this.Circulation,
+                Editors = this.Editors,
+                Articles = this.Articles
+            };
+
+            JsonSerializer.Serialize(fs, data, options);
+        }
+        return true;
+    }
+    catch
+    {
+        return false;
+    }
+    finally
+    {
+        Console.WriteLine("Save завершено");
     }
 }
+
+public bool Load(string filename)
+{
+    try
+    {
+        if (!File.Exists(filename))
+            return false;
+
+        using (FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read))
+        {
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
+            MagazineData? data = JsonSerializer.Deserialize<MagazineData>(fs, options);
+            if (data == null)
+                return false;
+
+            Name = data.Name ?? "Default Magazine";
+            Frequency = data.Frequency;
+            ReleaseDate = data.ReleaseDate;
+            Circulation = data.Circulation;
+            Editors = data.Editors ?? new List<Person>();
+            Articles = data.Articles ?? new List<Article>();
+        }
+
+        return true;
+    }
+    catch
+    {
+        return false;
+    }
+    finally
+    {
+        Console.WriteLine("Load завершено");
+    }
 }
+
+public static bool Save<T>(string filename, T obj) where T : Magazine
+{
+    return obj != null && obj.Save(filename);
+}
+
+public static bool Load<T>(string filename, T obj) where T : Magazine
+{
+    return obj != null && obj.Load(filename);
+}
+
+// ---------------- ADD FROM CONSOLE ----------------
+
+public bool AddFromConsole()
+    {
+        try
+        {
+            Console.WriteLine("Enter article: Title, AuthorName, AuthorSurname, Rating, /n use comma for writing words and int number for rating");
+
+            string? input = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(input))
+                return false;
+
+            string[] parts = input.Split(',');
+
+            if (parts.Length != 4)
+            {
+                Console.WriteLine("Wrong format!");
+                return false;
+            }
+
+            string title = parts[0].Trim();
+            string name = parts[1].Trim();
+            string surname = parts[2].Trim();
+            if (!double.TryParse(parts[3], out double rating))
+            {
+                Console.WriteLine("Rating error!");
+                return false;
+            }
+
+            Person author = new Person(name, surname, DateTime.Now);
+            Article article = new Article(author, title, rating);
+
+            _articles.Add(article);
+
+            Console.WriteLine("Article added!");
+
+            return true;
+        }
+        catch
+        {
+            Console.WriteLine("Error input!");
+            return false;
+        }
+    }
+}
+
+}
+

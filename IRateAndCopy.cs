@@ -1,5 +1,8 @@
-interface IRateAndCopy
+namespace Lab1
 {
-    double Rating { get; }
-    object DeepCopy();
+    public interface IRateAndCopy
+    {
+        double Rating { get; }
+        object DeepCopy();
+    }
 }

@@ -33,7 +33,7 @@ public class Edition : IComparable<Edition>
     public DateTime ReleaseDate
     {
         get => _releaseDate;
-        init => _releaseDate = value;
+        set => _releaseDate = value;
     }
 
     public int Circulation

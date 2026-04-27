@@ -3,7 +3,8 @@ using System;
 
 namespace Lab1
 {
-public class Person
+[Serializable]
+public class Person : IRateAndCopy
 {
     private string _name =null!;
     private string _surname=null!;
@@ -29,21 +30,21 @@ public class Person
     public string Name
     {
         get { return _name; }
-        init { _name = value; }
+        set { _name = value; }
     }
 
     // Властивість для прізвища
     public string Surname
     {
         get { return _surname; }
-        init { _surname = value; }
+        set { _surname = value; }
     }
 
     // Властивість для дати народження
     public DateTime BirthDate
     {
         get { return _birthDate; }
-        init { _birthDate = value; }
+        set { _birthDate = value; }
     }
 
     // Властивість для року народження
@@ -52,6 +53,8 @@ public class Person
         get { return _birthDate.Year; }
         set { _birthDate = new DateTime(value, _birthDate.Month, _birthDate.Day); }
     }
+
+    public double Rating => 0;
 
     // Перевизначення ToString()
     public override string ToString() => $"Name: {Name}, Surname: {Surname}, Birth date: {BirthDate:d}";
@@ -82,7 +85,8 @@ public class Person
 
     public static bool operator !=(Person? p1, Person? p2) => !(p1 == p2);
     
-    public Person DeepCopy() => new(Name, Surname, BirthDate);
+    public object DeepCopy()=> new Person(Name, Surname, BirthDate);
+        
         
 
 }

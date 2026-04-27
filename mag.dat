@@ -1,0 +1,28 @@
+{
+  "Name": "Test Magazine",
+  "Frequency": 1,
+  "ReleaseDate": "2026-04-27T11:50:21.5756834+03:00",
+  "Circulation": 1000,
+  "Editors": [
+    {
+      "Name": "\u0406\u0432\u0430\u043D",
+      "Surname": "\u0406\u0432\u0430\u043D\u043E\u0432",
+      "BirthDate": "2026-04-27T11:50:21.5756879+03:00",
+      "BirthYear": 2026,
+      "Rating": 0
+    }
+  ],
+  "Articles": [
+    {
+      "Author": {
+        "Name": "\u041F\u0435\u0442\u0440\u043E",
+        "Surname": "\u041F\u0435\u0442\u0440\u043E\u0432",
+        "BirthDate": "2026-04-27T11:50:21.5756904+03:00",
+        "BirthYear": 2026,
+        "Rating": 0
+      },
+      "Title": "Article 1",
+      "Rating": 4.5
+    }
+  ]
+}

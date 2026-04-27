@@ -2,11 +2,12 @@ using System;
 
 namespace Lab1
 {
+[Serializable]
 public class Article : IRateAndCopy
 {
-    public Person Author { get; init; }
-    public string Title { get; init; }
-    public double Rating { get; init; }
+    public Person Author { get; set; }
+    public string Title { get; set; }
+    public double Rating { get; set; }
 
     public Article(Person author, string title, double rating)
     {
@@ -16,6 +17,10 @@ public class Article : IRateAndCopy
     }
 
     public Article() : this(new Person(), "Title", 0) { }
+
+   
+
+    public object DeepCopy() => new Article( (Person)Author.DeepCopy(), Title,Rating);
 
     public override string ToString() => $"Author: {Author.ToShortString()}, Title: {Title}, Rating: {Rating}";
 
@@ -41,9 +46,8 @@ public class Article : IRateAndCopy
    
     public static bool operator !=(Article? a1, Article? a2)  => !(a1 == a2);
 
+     public override int GetHashCode() => HashCode.Combine(Author, Title, Rating);
     
-    public override int GetHashCode() => HashCode.Combine(Author, Title, Rating);
 
-    public virtual object DeepCopy()=> new Article(Author.DeepCopy(), Title, Rating);
 }
 }
